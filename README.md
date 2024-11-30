@@ -1,7 +1,7 @@
 # WatchNest
 This is a revamped and refactored version of the WatchList Website, this will be the final version of this project and will continue on the front end development. For now, this project contains an API that handles CRUD operations for both users and Administrators. 
 
-## Whats new
+## What's new
 - Changed Seed file into a controller that is only usable for Administrator instead of being called in Middleware.
 - Added cookies that will hold JWT authentication.
 - Added proper use of caching.
@@ -11,7 +11,97 @@ This is a revamped and refactored version of the WatchList Website, this will be
 - Added Pagination Helper class, more info below.
 - Seperated Interfaces and Implementation in Models folder
 
+**NOTE: When using Swagger, you may use either cookies or input token to access endpoints that require a login. If you are using cookies, just simply login in the login enpoint and you can use the restricted endpoint that are protected with Authorization attribute. You can also input the Bearer Token produced in login input when credentials are verified**
+
 # Overview
 This Project is developed in .NET 6 and its main purpose is to manage and store user's series, movies, and videos that they have watched and filter their request by genre, Title, and/or provider. The API follows the RESTful convention and relies on Distributed SQL for storage and Caching, JWT for authentication and authorization, and cookies for storing JWT Bearer token. 
+
+I have set up 3 different host to be tested on:
+
+`http://localhost:5000`
+
+`http://localhost:5001`
+
+`https://localhost:44350`
+
+Ensure that whichever host you choose, add `/swagger/index.html` at the end of the URL to access Swagger.
+
+## Packages Used 
+Please, when using this project, download the necessary packages that was used for this project:
+
+
+- Entity Framework 7.0.14
+- Entity Framwork SQL 7.0.14
+- Caching SqlServer 8.0.6
+- Identity Framework 6.0.25
+- JWT Authentication 6.0.29
+- Authentication Cookies 2.1.2
+- Swashbuckle 6.9.0
+- Swashbuckle Annotation 6.4.0
+- Linq.Dynamic.Core 1.4.5
+
+## CORS
+When running the application:
+calling `http://localhost:5000` will redirect to `https://localhost:44350`, if you use any of the two mentioned host for swagger testing , you will be able to access the available endpoint. 
+
+The third host, `http://localhost:5001` is not mentioned or part of the policy made by CORS in this project. Hence, when trying to access their endpoint in swagger, you will not be able to do so due to CORS not allowing the any outside domain or third party calls to access them becuase they are not part of their allowed acess. 
+
+You can add or change the allowed orgins or host in appsettings.json 
+
+**The purpose of CORS is to allow browsers to access resources by using HTTP requests initiated from scripts when those resources are located in their domains other than the one hosting the script. This helps with protecting the site with Cross-Site Request Forgery (CSRF) attacks**
+
+## Swagger Documentation Filter
+
+There is an AuthRequirementFilter class that inherits `IOperationFilter`. The purpose of this class is add security requirement to endpoint that use the Authorize attribute along with status response code for unauthorized (401) and forbidden (403) if they are not already defined. This ensures that endpoints not marked with the Authorize attribute are excluded from these security requirement.
+
+```csharp
+ public void Apply(OpenApiOperation operation, OperationFilterContext context)
+ {
+     if (!context.ApiDescription.ActionDescriptor.EndpointMetadata
+         .OfType<AuthorizeAttribute>().Any())
+     {
+         return;
+     }
+     operation.Security = new List<OpenApiSecurityRequirement>
+     {
+         new OpenApiSecurityRequirement
+         {
+             {
+                 new OpenApiSecurityScheme
+                 {
+                     Name = "Bearer",
+                     In = ParameterLocation.Header,
+                     Reference = new OpenApiReference
+                     {
+                         Type= ReferenceType.SecurityScheme,
+                         Id = "Bearer"
+                     }
+                 },
+                 Array.Empty<string>()
+             }
+         }
+     };
+
+     if (!operation.Responses.ContainsKey("401"))
+     {
+         operation.Responses.Add("401", new OpenApiResponse
+         {
+             Description = "Unauthorized - Authentication is required and failed or was not provided."
+         });
+     }
+
+     if (!operation.Responses.ContainsKey("403"))
+     {
+         operation.Responses.Add("403", new OpenApiResponse
+         {
+             Description = "Forbidden - You do not have permission to access this resource."
+         });
+     }
+
+
+ }
+```
+## Cookies
+As mentioned before, I have added cookies in this projects.
 
 **This file is a Work in Progress**
