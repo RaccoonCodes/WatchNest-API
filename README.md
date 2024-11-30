@@ -50,6 +50,18 @@ You can add or change the allowed orgins or host in appsettings.json
 
 **The purpose of CORS is to allow browsers to access resources by using HTTP requests initiated from scripts when those resources are located in their domains other than the one hosting the script. This helps with protecting the site with Cross-Site Request Forgery (CSRF) attacks**
 
+## Test Login 
+You can use the following credentials for testing:
+- **User:**
+  - `userName`: `TestUser`
+  - `password`: `MyVeryOwnTestPassword123$`
+
+- **Admin:**
+  - `userName`: `TestAdministrator`
+  - `password`: `MyVeryOwnTestPassword123$`
+
+After a successful login, a JWT token will be returned
+
 ## Swagger Documentation Filter
 
 There is an AuthRequirementFilter class that inherits `IOperationFilter`. The purpose of this class is add security requirement to endpoint that use the Authorize attribute along with status response code for unauthorized (401) and forbidden (403) if they are not already defined. This ensures that endpoints not marked with the Authorize attribute are excluded from these security requirement.
@@ -101,7 +113,31 @@ There is an AuthRequirementFilter class that inherits `IOperationFilter`. The pu
 
  }
 ```
-## Cookies
-As mentioned before, I have added cookies in this projects.
 
-**This file is a Work in Progress**
+## JWT
+The information provided needed for creating the JWT is stored in User secrets for privacy and security resons. You will need to create your own JWT Payload. This typically will contain the following
+
+```
+"JWT": {
+   "Issuer": "YourIssuerHere",
+   "Audience": "YourAudienceHere",
+   "SigningKey": "Create_A_Secure_Key_Here"
+ }
+```
+
+The JWT Bearer is added to Authentication Middleware in `Program.cs`.
+
+There are many resons for using JWT, for this case, I used it for security and performance improvement as JWT will contain encrypted information about user info and their roles. 
+ 
+## Cookies
+As mentioned before, I have added cookies in this projects. The cookies contain the Bearer Token produced by JWT. This way, when stored in cookies, JWTs are automatically sent with every request to the server since JWT itself are stateless. The Cookies information on name, security and expiration are on Program.cs
+
+**The section below will be focusing on the Time Complexity on the Algorithms made for the operation made in controllers and methods.**
+
+## Time Complexities
+
+The Time complexity are focused on Model classes that are used by the controller since the business logic and action response are following the Seperation of Concern.
+
+### UserService Class
+
+**This README is a Work in Progress**
