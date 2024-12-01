@@ -139,7 +139,7 @@ As mentioned before, I have added cookies in this projects. The cookies contain 
 The Time complexity are focused on Model classes that are used by the controller since the business logic and action response are following the Seperation of Concerns. Thanks to indexing the database properly, the performance was improved from previous version which had no indexing. Before getting into the classes and methods, I wll mention the database set up.
 
 ### ApplicationDbContext
-The databse has two tables, `SeriesModel` and `ApiUsers`. `SeriesModel` contains properies model for series that will hold SeriesID, UserID, Title, etc. `ApiUsers` inherits IdentityUser class that contains property for Users such as username, password, etc. It also contains a collection of `SeriesModel` object that will hold a one to many relationship between user and collection of their series. 
+The databse has two tables, `SeriesModel` and `ApiUsers`. `SeriesModel` contains properies model for series that will hold SeriesID, UserID, Title, etc. `ApiUsers` inherits `IdentityUser` class that contains property for Users such as username, password, etc. It also contains a collection of `SeriesModel` object that will hold a one to many relationship between user and collection of their series. 
 
 In the `ApplicationDbContext.cs`, I use Fluent API to model the tables for the database. I Added Index for performance and Time complexity improvement from WatchList V2. For `ApiUser`, I've added Indexing on `Id` and `UserName`. On `SeriesModel`, there is Indexing on UserID, Title, Genre, and SeriesID. 
 
@@ -155,7 +155,8 @@ This Method Registers users that will contain their UserName, Email, and Passwor
 This method searches and validate credentials. If successful, it generates a JWT Bearer that contains username, UserID, and their Role. it returns and encrypted JWT string or null when their is an invalid attempt. Becuase of Indexing, **`Time Complexity is O(lg n)`** where n is the number of records in the table.
 
 ### SeriesService Class
-This class handles CRUD operations for series in each users. 
+This class handles CRUD operations for series in each users. This has 4 impotant methods:
+`CreateSeriesAsync`, `GetSeriesAsync`,`UpdateSeriesAsync` and `DeleteSeriesAsync`.
 
 **CreateSeriesAsync method**
 
@@ -178,7 +179,7 @@ The DeleteSeriesAsync method deletes a series from the database using the provid
 
 ## AdminService Class
 
-This class is for administration where it provides more action such as retriving all series and users in the database along with deleting a specific user.
+This class is for administration where it provides more action such as retriving all series and users in the database along with deleting a specific user. This class contains three methods: `DeleteUserAsync`, `GetAllUsersAsync`, and `GetAllSeriesAsync`.
 
 **DeleteUserAsync method**
 
@@ -233,6 +234,35 @@ which are appropiately seen in controllers respectively.
 Along side with using Response Caching in controllers, I have also added Pagination which will be the next improvement that I will mention in this project
 
 ## PaginationHelper
+
+```csharp
+ public static List<LinkDTO> GeneratePaginationLinks(string baseUrl, string rel, string action, int pageIndex,
+     int pageSize, int totalPages,Dictionary<string,string>? additionalParams = null)
+```
+
+This static class generates paginated links for HATEOAS (Hypermedia as the Engine of Application State). The paginated links offered in this class provides previous, current, and next for paginated results provided in Model classes. As the name suggest, this is a helper classes that provides a way to use for all data types which makes it reusable for model classes and reduces redundancy. 
+
+Its parameters provide the following:
+
+`string baseUrl`: which is the base API URL endpoint
+
+`string rel`: Describes the relationship of the link (Self, next, previous)
+
+`string action`: Describes the action of the link (GET, POST, DELETE, etc) 
+
+`int pageIndex`: Current index or page
+
+`int pageSize`: Number of entity per page
+
+`int totalPages`: Number of total pages based on page size
+
+`Dictionary<string,string>? additionalParams`: Optional dictionary of additional query  to include in the links.
+
+When used in model and returned in controllers, it provides a list of URL of links that provide  easy-to-follow navigation links. Also since it provides custom query parameters, if the users provides more info for pagination such as sorting and Filter, this methods handles it without needing to create a new method, allowing flexible pagination for complex use cases.
+
+## Attributes
+In this Folder, I added two important classes, `SortColumnValidatorAttribute` and `SortOrderValidatorAttribute`.
+
 
 
 **This README is a Work in Progress**
