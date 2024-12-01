@@ -60,7 +60,7 @@ You can use the following credentials for testing:
   - `userName`: `TestAdministrator`
   - `password`: `MyVeryOwnTestPassword123$`
 
-After a successful login, a JWT token will be returned
+After a successful login, the endpoint produces a string of JWT Bearer
 
 ## Swagger Documentation Filter
 
@@ -136,7 +136,7 @@ As mentioned before, I have added cookies in this projects. The cookies contain 
 
 ## Time Complexities
 
-The Time complexity are focused on Model classes that are used by the controller since the business logic and action response are following the Seperation of Concerns. Before getting into each class and method, I wll mention the database set up.
+The Time complexity are focused on Model classes that are used by the controller since the business logic and action response are following the Seperation of Concerns. Thanks to indexing the database properly, the performance was improved from previous version which had no indexing. Before getting into the classes and methods, I wll mention the database set up.
 
 ### ApplicationDbContext
 The databse has two tables, `SeriesModel` and `ApiUsers`. `SeriesModel` contains properies model for series that will hold SeriesID, UserID, Title, etc. `ApiUsers` inherits IdentityUser class that contains property for Users such as username, password, etc. It also contains a collection of `SeriesModel` object that will hold a one to many relationship between user and collection of their series. 
@@ -162,5 +162,77 @@ This class handles CRUD operations for series in each users.
 This method creates a series and insert it into the database based on UserID and the series info provided. Since this is a simple insertion with table index appropiately,**`Time Complexity is O(1)`**
 
 **GetSeriesAsync method**
+
+This method retrieves a collection of user's series list and turn them into paginated result where links are created based on page index, pagesize, and if there is filtering and sorting. There is caching in this method which can help performance along with using Iqueryable function which does lazy loading where it execute a query when it calls and store into a collection, in my case. 
+
+The Time Complexity depends on the situation and the state of the method. If it is the first time using this method or the Cache is a miss, The **`Time Complexity is O(lg n + r )`** where r is the number of records matching the filter and n is number of series. If the cache is a Hit, then the **`Time Complexity is O(lg n)`** 
+
+**UpdateSeriesAsync method**
+
+This Method Updates existing series based on userID and SeriesID. There is Concurrency check in case ther was a change in the database before the user can do more changes. 
+Overall **`Time Complexity is O(lg n)`**
+
+**DeleteSeriesAsync method**
+
+The DeleteSeriesAsync method deletes a series from the database using the provided series ID. Its **`Time complexity is O(lg n)`**, where n is the total number of series in the database. This is because of proper indexing in the database.
+
+## AdminService Class
+
+This class is for administration where it provides more action such as retriving all series and users in the database along with deleting a specific user.
+
+**DeleteUserAsync method**
+
+The DeleteUserAsync method removes a user from the identity database by their user ID. The **`Time complexity is O(lg n)`** where n is total number of users in the database. 
+
+**GetAllUsersAsync method**
+
+This method retrieves all the users in the database with pagination and caching, if cache is a miss, the **`Time complexity is O(lg n)`**. If cache is a hit, then the  **`Time complexity is O(1)`**
+
+**GetAllSeriesAsync method**
+
+This method is similar to GetAllUsersAsync method but only with series. It retrieves paginated unique series titles from the database with filtering and sorting. If caching is a miss, **`Time complexity is O(n lg n)`** where n is the total number of series records before applying pagination. If cache is a hit, then the **`Time complexity is O(1)`**
+
+## Controller Improvements
+Along side with improved performance in algorithms, I've also added Cache profiles that also improve performance in controllers and action. I have added the following Middleware in Program.cs
+
+```csharp
+builder.Services.AddControllers(opts =>
+{
+    opts.CacheProfiles.Add("NoCache", new CacheProfile()
+    {
+        Location = ResponseCacheLocation.None,
+        NoStore = true
+    });
+
+    opts.CacheProfiles.Add("Any-60", new CacheProfile()
+    {
+        Location = ResponseCacheLocation.Any,
+        Duration = 60
+    });
+
+});
+```
+
+The profiles I use are `Nocache` (which i do not use however left it there to show that it is possible to do so) and `Any-60`. `Any-60` stores the responses made by the action method in controllers for 60 seconds or 1 minute. This way it helps with performance by reducing repeated database queries, speeding up response times, and minimizing expensive operations. 
+
+As mentioned before, I did not use `Nocache`. Instead, I used:
+
+```csharp
+app.Use((context, next) =>
+{
+    context.Response.Headers["cache-control"] = "no-cache, no-store";
+    return next.Invoke();
+});
+```
+
+This sets all endpoints or, in this case, action method to no-cache, no-store. It will not store any cache responses produced by these action. So the only way to store an action response is to explicitly use the attribute for the action method: 
+`[ResponseCache(CacheProfileName = "Any-60")]`
+
+which are appropiately seen in controllers respectively. 
+
+Along side with using Response Caching in controllers, I have also added Pagination which will be the next improvement that I will mention in this project
+
+## PaginationHelper
+
 
 **This README is a Work in Progress**
