@@ -136,8 +136,31 @@ As mentioned before, I have added cookies in this projects. The cookies contain 
 
 ## Time Complexities
 
-The Time complexity are focused on Model classes that are used by the controller since the business logic and action response are following the Seperation of Concern.
+The Time complexity are focused on Model classes that are used by the controller since the business logic and action response are following the Seperation of Concerns. Before getting into each class and method, I wll mention the database set up.
+
+### ApplicationDbContext
+The databse has two tables, `SeriesModel` and `ApiUsers`. `SeriesModel` contains properies model for series that will hold SeriesID, UserID, Title, etc. `ApiUsers` inherits IdentityUser class that contains property for Users such as username, password, etc. It also contains a collection of `SeriesModel` object that will hold a one to many relationship between user and collection of their series. 
+
+In the `ApplicationDbContext.cs`, I use Fluent API to model the tables for the database. I Added Index for performance and Time complexity improvement from WatchList V2. For `ApiUser`, I've added Indexing on `Id` and `UserName`. On `SeriesModel`, there is Indexing on UserID, Title, Genre, and SeriesID. 
 
 ### UserService Class
+UserService class inherits IUserServices that contains `RegisterAsync` and `LoginAsync` method.
+
+**RegisterAsync method**
+
+This Method Registers users that will contain their UserName, Email, and Password. This inserts, after validation and assigning their role as a User, into the database. This Method has a **`Time Complexity of O(1)`**
+
+**LoginAsync method**
+
+This method searches and validate credentials. If successful, it generates a JWT Bearer that contains username, UserID, and their Role. it returns and encrypted JWT string or null when their is an invalid attempt. Becuase of Indexing, **`Time Complexity is O(lg n)`** where n is the number of records in the table.
+
+### SeriesService Class
+This class handles CRUD operations for series in each users. 
+
+**CreateSeriesAsync method**
+
+This method creates a series and insert it into the database based on UserID and the series info provided. Since this is a simple insertion with table index appropiately,**`Time Complexity is O(1)`**
+
+**GetSeriesAsync method**
 
 **This README is a Work in Progress**
