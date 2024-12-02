@@ -2,7 +2,7 @@
 This is a revamped and refactored version of the WatchList Website, this will be the final version of this project and will continue on the front end development. For now, this project contains an API that handles CRUD operations for both users and Administrators. 
 
 ## Table of Contents
-1. [What's New](#What's-New)
+1. [What's New](#Whats-New)
 2. 
 
 ## What's New
