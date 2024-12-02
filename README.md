@@ -12,6 +12,15 @@ This is a revamped and refactored version of the WatchList Website, this will be
 8. [Cookies](#Cookies)
 9. [Time Complexities](#Time-Complexities)
     - [ApplicationDbContext](#ApplicationDbContext)
+    - [UserService Class](#UserService-Class)
+    - [SeriesService Class](#SeriesService-Class)
+    - [AdminService Class](#AdminService-Class)
+10. [Controller Improvements](#Controller-Improvements)
+11. [Pagination Helper](#PaginationHelper)
+12. [DistributedCacheExtensions](#DistributedCacheExtensions)
+13. [Attributes](#Attributes)
+14. [Summary](#Summary)
+    - [Future Updates](#Future-Updates)
 
 ## What's New
 - Changed Seed file into a controller that is only usable for Administrator instead of being called in Middleware.
@@ -313,7 +322,6 @@ This method creates cache keys by serializing the object and hasing it using MD5
 
 This way, this class simplifies caching, which reduces boilerplate code or redundency, it also ensures type-safe retrieval of cached data with deserialization into the desired data type, improved cache efficiency from previous version (WatchList V2) by creating  cache key that are unique, reducing cache key collisions. 
 
-
 ## Attributes
 In this Folder, I added two important classes, `SortColumnValidatorAttribute` and `SortOrderValidatorAttribute`.
 
@@ -403,12 +411,6 @@ In this project, I focused on performance and refactored the code from my provio
 ## Future Updates
 As mentioned before, this will be the last version of this project I will make. Therefore, back-end work is finished (unless I come across a bug or need to update certain functionalities). Moving forward, I will start developing front-end work for this project that it desperately needs.
 
-Once the front end is finished I will update this project and add a seperate README specifically for front-end
+Once the front end is finished I will update this project and add a seperate README specifically for front-end development
 
 Have a nice day!
-
-
-
-
-
-**This README is a Work in Progress**
