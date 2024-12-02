@@ -302,7 +302,7 @@ This constructor accepts Type which will represents the entity type that will be
  protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
 ```
 
-In this validation overrride, it checks if the value that the user inputs is not null or empty and if the entity type has propertgy matching the value. It returns the results of the validation. 
+In this validation override, it checks if the value that the user inputs is not null or empty and if the entity type has propertgy matching the value. It returns the results of the validation. 
 
 This Attribute gets used mostly in my DTO classes. For example, in my `RequestDTO`, I used in:
 
@@ -356,6 +356,26 @@ public string? SortOrder { get; set; } = "ASC";
 ```
 
 which makes the 3 defined sorting strings the only valid values.
+
+## Summary
+In this project, I focused on performance and refactored the code from my provious work (which was WatchListV2_RESTAPI). I also included the Time Complexity of all important algorithms that I have created. Below is a quick list and recap of major changes and improvement made in this project:
+
+- Altered Seed file and made into a controller that is only usable for Administrator
+- Added cookies that will hold JWT authentication.
+- Added proper use of Distributed Caching and Profile Caching.
+- Added CORS for Cross-Site Request Forgery attacks.
+- Added filter for endpoints that required Authorization for Swagger testing.
+- Added Pagination Helper class.
+- Indexed necessary propeties for performance Improvements
+- Seperated Interfaces and Implementation in Models folder
+- Added Time Complexity to show improvements made for action methods.
+
+## Future Updates
+As mentioned before, this will be the last version of this project I will make. Therefore, back-end work is finished (unless I come across a bug or need to update certain functionalities). Moving forward, I will start developing front-end work for this project that it desperately needs.
+
+Once the front end is finished I will update this project and add a seperate README specifically for front-end
+
+Have a nice day!
 
 
 
