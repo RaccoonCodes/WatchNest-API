@@ -263,6 +263,78 @@ When used in model and returned in controllers, it provides a list of URL of lin
 ## Attributes
 In this Folder, I added two important classes, `SortColumnValidatorAttribute` and `SortOrderValidatorAttribute`.
 
+**SortColumnValidatorAttribute**
+
+This class is a custom validator for sorting specific data types. This ensures that services provide valid column names when sorting data. 
+
+```csharp
+ public SortColumnValidatorAttribute(Type entityType) : base("Value must match an existing column.")
+     => EntityType = entityType;
+```
+
+This constructor accepts Type which will represents the entity type that will be validate against. It also sets an error message by default. 
+
+```csharp
+ protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
+```
+
+In this validation overrride, it checks if the value that the user inputs is not null or empty and if the entity type has propertgy matching the value. It returns the results of the validation. 
+
+This Attribute gets used mostly in my DTO classes. For example, in my `RequestDTO`, I used in:
+
+```csharp
+ [DefaultValue("TitleWatched")]
+ [SortColumnValidator(typeof(SeriesDTO))]
+ public string? SortColumn { get; set; } = "TitleWatched";
+```
+
+This DTO is used to contain User's request for Get action method. This sorts user's series based on valid properties that has data type 'string' in SeriesDTO which contains
+are:
+
+`public string UserID `
+
+`public string TitleWatched`
+
+`public string ProviderWatched`
+
+`public string Genre`
+
+This way it encapsulates validation rules by using attributes, reduces the need to manually validate multiple places, prevents invalid sorting, and easly used for any model property by specifying the target entity type. 
+
+**SortOrderValidatorAttribute**
+
+This class is also a custom validator but for sorting order which are given two predefined sort order "ASC" and "DESC". 
+
+```csharp
+ public SortOrderValidatorAttribute() : base("Values must be one of the following {0}") { }
+```
+
+The constructor initializes the attribute with the default error message which will display the two predefined allowed string values. 
+
+```csharp
+ protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
+```
+
+The same as `SortColumnValidatorAttribute` ovveride, but instead of checking for entity property, it checks if the user's sorting value is valid.
+
+This attribute is used in DTO classes for example, again, in my `RequestDTO`, 
+
+```csharp
+[SortOrderValidator]
+public string? SortOrder { get; set; } = "ASC";
+```
+
+The attributes sets the propeties to validate against the two predefined allowed order. Which validate logic in one place. It is also possible to extend additional values, for example:
+
+```csharp
+[SortOrderValidator(AllowedValues = new[] { "ASC", "DESC", "RANDOM" })]
+public string? SortOrder { get; set; } = "ASC";
+```
+
+which makes the 3 defined sorting strings the only valid values.
+
+
+
 
 
 **This README is a Work in Progress**
