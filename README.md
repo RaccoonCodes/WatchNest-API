@@ -260,6 +260,30 @@ Its parameters provide the following:
 
 When used in model and returned in controllers, it provides a list of URL of links that provide  easy-to-follow navigation links. Also since it provides custom query parameters, if the users provides more info for pagination such as sorting and Filter, this methods handles it without needing to create a new method, allowing flexible pagination for complex use cases.
 
+## DistributedCacheExtensions
+This class provides helper methods for caching operations such as retrieving, sorting and generating cache keys. This was made for reusability.
+
+```csharp
+public static bool TryGetValue<T>(this IDistributedCache cache, string key, out T? value)
+```
+
+This method attempts to retrieve a cached value already stored and deserialize if it exist. It returns true if the key exist and deserialization succeeds, otherise, it returns false. 
+
+```csharp
+public static void Set<T>(this IDistributedCache cache, string key, T value, TimeSpan timeSpan)
+```
+
+This method stores the value in cache after serializing it to a JSON and setting an expiration time to the cache to be valid. 
+
+```csharp
+public static string GenerateCacheKey(this object input)
+```
+
+This method creates cache keys by serializing the object and hasing it using MD5 encryption. It returns a string of hashed string representing the serialized object.
+
+This way, this class simplifies caching, which reduces boilerplate code or redundency, it also ensures type-safe retrieval of cached data with deserialization into the desired data type, improved cache efficiency from previous version (WatchList V2) by creating  cache key that are unique, reducing cache key collisions. 
+
+
 ## Attributes
 In this Folder, I added two important classes, `SortColumnValidatorAttribute` and `SortOrderValidatorAttribute`.
 
