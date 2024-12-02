@@ -3,7 +3,15 @@ This is a revamped and refactored version of the WatchList Website, this will be
 
 ## Table of Contents
 1. [What's New](#Whats-New)
-2. 
+2. [Overview](#Overview)
+3. [Packages Used](#Packages-Used)
+4. [CORS](#CORS)
+5. [Test Login](#Test-Login)
+6. [Swagger Documentation Filter](#Swagger-Documentation-Filter)
+7. [JWT](#JWT)
+8. [Cookies](#Cookies)
+9. [Time Complexities](#Time-Complexities)
+    - [ApplicationDbContext](#ApplicationDbContext)
 
 ## What's New
 - Changed Seed file into a controller that is only usable for Administrator instead of being called in Middleware.
