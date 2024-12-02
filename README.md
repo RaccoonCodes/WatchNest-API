@@ -1,7 +1,11 @@
 # WatchNest
 This is a revamped and refactored version of the WatchList Website, this will be the final version of this project and will continue on the front end development. For now, this project contains an API that handles CRUD operations for both users and Administrators. 
 
-## What's new
+## Table of Contents
+1. [What's New](#What's-New)
+2. 
+
+## What's New
 - Changed Seed file into a controller that is only usable for Administrator instead of being called in Middleware.
 - Added cookies that will hold JWT authentication.
 - Added proper use of caching.
@@ -112,6 +116,24 @@ There is an AuthRequirementFilter class that inherits `IOperationFilter`. The pu
 
 
  }
+```
+
+This was, then, added to a middleware for AddSwaggerGen
+```csharp
+builder.Services.AddSwaggerGen(opts =>
+{
+    opts.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description ="Please enter token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme ="bearer"
+    });
+    opts.OperationFilter<AuthRequirementFilter>();
+    opts.EnableAnnotations();
+});
 ```
 
 ## JWT
