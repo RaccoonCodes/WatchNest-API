@@ -28,7 +28,7 @@ This is a revamped and refactored version of the WatchList Website, this will be
 - Added proper use of caching.
 - Added CORS, more info below.
 - Added a filter for endpoints that required Authorization for Swagger, more info below.
-- Added use of Global No Cache on enpoints.
+- Added use of Global No Cache on endpoints.
 - Added Pagination Helper class, more info below.
 - Seperated Interfaces and Implementation in Models folder
 
