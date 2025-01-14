@@ -1,6 +1,24 @@
 # WatchNest
 This is a revamped and refactored version of the WatchList Website, this will be the final version of this project and will continue on the front end development. For now, this project contains an API that handles CRUD operations for both users and Administrators. 
 
+# Update 1/13/2025
+Some major updates were made since the completion of front-end development:
+
+- Removed caching to certain actions including profile caching in the API. They have been moved to the main website.
+
+- Changed two action, GetAllUsers and GetAllSeries in Admin Controller, return types from generic to strongly type for type safety and clarity in knowing what type of return is expected for each action methods.
+
+- Added New Models for the two actions previously mentioned.
+- Added more methods in CORS to allow Cookies to be used as credentials in main app.
+- Expiration for cookies has been extended to 30 min
+- SortColumnValidation Attribute as been modified to check other properties
+- Corrected and added proper JWT and Cookies validation to expire at the same time.
+
+**Theses changes made little to no impact to performance so Time Complexity is still the same after these changes were made**
+
+**The Main Application is Complete and a new README is Added for more info about the front-end work**
+
+
 ## Table of Contents
 1. [What's New](#Whats-New)
 2. [Overview](#Overview)
