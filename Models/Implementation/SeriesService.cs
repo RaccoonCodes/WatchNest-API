@@ -7,6 +7,7 @@ using System.Text.Json;
 using WatchNest.Extensions;
 using System.Security.Cryptography;
 using System.Text;
+using System.Reflection.PortableExecutable;
 
 namespace WatchNest.Models.Implementation
 {
@@ -26,7 +27,7 @@ namespace WatchNest.Models.Implementation
                 UserID = input.UserID,
                 TitleWatched = input.TitleWatched,
                 SeasonWatched = input.SeasonWatched,
-                Provider = input.ProviderWatched,
+                Provider = input.Provider,
                 Genre = input.Genre
             };
             _context.Series.Add(newSeries);
@@ -40,8 +41,8 @@ namespace WatchNest.Models.Implementation
             };
 
         }
-        //T(x) = O(n lg n) where n is the number of series
-        //T(x) = O(1) when cache is a Hit
+        //T(x) = O(lg n) where n is the number of series
+        //T(x) =O(lg n + r) where 𝑟 is the number of records matching the filters.
         public async Task<RestDTO<SeriesModel[]>> GetSeriesAsync(RequestDTO<SeriesDTO> input, string baseurl, string rel, string action)
         {
             if(input.PageIndex < 0 || input.PageSize <= 0)
@@ -56,10 +57,16 @@ namespace WatchNest.Models.Implementation
 
             if (!string.IsNullOrEmpty(input.FilterQuery))
             {
-                query = query.Where(b => b.TitleWatched.Contains(input.FilterQuery));
-
+                if (!string.IsNullOrEmpty(input.SortColumn))
+                {
+                    query = query.Where($"{input.SortColumn}.Contains(@0)", input.FilterQuery);
+                }
+                else
+                {
+                    query = query.Where(b => b.TitleWatched.Contains(input.FilterQuery));
+                }
             }
-
+            
             var recordCount = await query.CountAsync();
 
             if (recordCount == 0)
@@ -79,17 +86,21 @@ namespace WatchNest.Models.Implementation
             
             var totalPages = (int)Math.Ceiling(recordCount / (double)input.PageSize);
 
-            var cacheKey = input.GenerateCacheKey();
+            //NOTE: CACHING MOVED TO MAIN APPLICATION, TO KEEP CACHING: UNCOMMMENT AND DELETE THE LINE OF CODE BELOW
+            //var cacheKey = input.GenerateCacheKey();
+            //if (!_distributedCache.TryGetValue<SeriesModel[]>(cacheKey, out result))
+            //{
+            //    result = await query.OrderBy($"{input.SortColumn} {input.SortOrder}")
+            //                 .Skip(input.PageIndex * input.PageSize)
+            //                 .Take(input.PageSize)
+            //                 .ToArrayAsync();
+            //    _distributedCache.Set(cacheKey,result,new TimeSpan(0,1,0));
+            //}
 
-            //caching
-            if (!_distributedCache.TryGetValue<SeriesModel[]>(cacheKey, out result))
-            {
-                result = await query.OrderBy($"{input.SortColumn} {input.SortOrder}")
-                             .Skip(input.PageIndex * input.PageSize)
-                             .Take(input.PageSize)
-                             .ToArrayAsync();
-                _distributedCache.Set(cacheKey,result,new TimeSpan(0,3,0));
-            }
+            result = await query.OrderBy($"{input.SortColumn} {input.SortOrder}")
+                            .Skip(input.PageIndex * input.PageSize)
+                            .Take(input.PageSize)
+                            .ToArrayAsync();
 
             var links = PaginationHelper.GeneratePaginationLinks(baseurl,rel,action,
                 input.PageIndex,input.PageSize,totalPages, new Dictionary<string, string> {
@@ -115,7 +126,7 @@ namespace WatchNest.Models.Implementation
         public async Task<RestDTO<SeriesModel?>?> UpdateSeriesAsync(SeriesDTO model, string baseurl, string rel, string action)
         {
             var series = await _context.Series
-                .FirstOrDefaultAsync(b => b.UserID == model.UserID && b.SeriesID == model.Id);
+                .FirstOrDefaultAsync(b => b.UserID == model.UserID && b.SeriesID == model.SeriesID);
 
             if (series == null)
             {
@@ -128,7 +139,7 @@ namespace WatchNest.Models.Implementation
 
             series.TitleWatched = model.TitleWatched ?? series.TitleWatched;
             series.Genre = model.Genre ?? series.Genre;
-            series.Provider = model.ProviderWatched ?? series.Provider;
+            series.Provider = model.Provider ?? series.Provider;
             series.SeasonWatched = model.SeasonWatched != 0 ? model.SeasonWatched : series.SeasonWatched;
 
             try

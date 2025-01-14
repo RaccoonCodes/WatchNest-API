@@ -60,7 +60,7 @@ namespace WatchNest.Controllers
 
         //READ 
         [HttpGet(Name = "GetSeries")]
-        [ResponseCache(CacheProfileName = "Any-60")]
+        //[ResponseCache(CacheProfileName = "Any-60")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [SwaggerOperation(
@@ -93,7 +93,7 @@ namespace WatchNest.Controllers
         public async Task<ActionResult<SeriesModel?>> Put([FromBody] SeriesDTO model)
         {
             var result = await _seriesService.UpdateSeriesAsync(model, Url.Action(
-                nameof(GetByIdInfo), "Series", new {id = model.Id},
+                nameof(GetByIdInfo), "Series", new {id = model.SeriesID},
                        Request.Scheme)!, "self", "GET");
 
             if (result?.Data == null)

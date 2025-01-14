@@ -5,7 +5,7 @@ namespace WatchNest.DTO
     public class SeriesDTO
     {
         [Required]
-        public int Id { get; set; }
+        public int SeriesID { get; set; }
         [Required]
         public string UserID { get; set; } = string.Empty;
         [Required]
@@ -13,7 +13,7 @@ namespace WatchNest.DTO
         [Required]
         public int SeasonWatched { get; set; }
         [Required]
-        public string ProviderWatched { get; set; } = string.Empty;
+        public string Provider { get; set; } = string.Empty;
         [Required]
         public string Genre { get; set; } = string.Empty;
     }

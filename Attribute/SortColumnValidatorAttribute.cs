@@ -6,7 +6,7 @@ namespace WatchNest.Attribute
     {
         public Type EntityType { get; set; }
         public SortColumnValidatorAttribute(Type entityType) : base("Value must match an existing column.")
-            => EntityType = entityType;
+            => (EntityType) = (entityType);
 
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
@@ -15,7 +15,10 @@ namespace WatchNest.Attribute
                 var strValue = value as string;
                 //checks that it is not null or empty and that it ensures that EntityType matches at least one
                 //property strValue
-                if (!string.IsNullOrEmpty(strValue) && EntityType.GetProperties().Any(p => p.Name == strValue))
+                var property = EntityType.GetProperties()
+                                     .FirstOrDefault(p => p.Name.Equals(strValue, StringComparison.OrdinalIgnoreCase));
+
+                if (property != null && (property.PropertyType == typeof(string) || property.PropertyType == typeof(int)))
                 {
                     return ValidationResult.Success;
                 }

@@ -13,7 +13,6 @@ namespace WatchNest.Models.Implementation
     {
         private readonly UserManager<ApiUsers> _usersManager;
         private readonly IConfiguration _configuration;
-        //private readonly IDistributedCache _cache;
 
         public UserService(UserManager<ApiUsers> usersManager, IConfiguration configuration)
         => (_usersManager, _configuration) = (usersManager, configuration);
@@ -36,7 +35,7 @@ namespace WatchNest.Models.Implementation
             return result;
         }
 
-        //T(x) = O(n) where n is the number of roles assign to the user
+        //T(x) = O(lg n) n represents the number of records in the table
         public async Task<string?> LoginAsync(LoginDTO input)
         {
            var user = await _usersManager.FindByNameAsync(input.UserName);
@@ -71,7 +70,7 @@ namespace WatchNest.Models.Implementation
                 issuer: _configuration["JWT:Issuer"],
                 audience: _configuration["JWT:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddSeconds(600), //valid for about 10 min
+                expires: DateTime.Now.AddSeconds(1800), //valid for about 30 min
                 signingCredentials: signingCredentials
             );
 

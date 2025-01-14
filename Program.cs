@@ -37,7 +37,9 @@ builder.Services.AddCors(opts =>
     {
         cfg.WithOrigins(allowedOrigins)
         .AllowAnyHeader()
-        .AllowAnyMethod();
+        .AllowAnyMethod()
+        .AllowCredentials();
+
     });
 
     opts.AddPolicy(name: "AnyOrigin",
@@ -97,7 +99,8 @@ builder.Services.AddAuthentication(opts =>
         ValidAudience = builder.Configuration["JWT:Audience"],
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(
-            System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"]))
+            System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])),
+        ClockSkew = TimeSpan.Zero // No extra buffer time
     };
     opts.Events = new JwtBearerEvents
     {
@@ -112,9 +115,10 @@ builder.Services.AddAuthentication(opts =>
     opts.Cookie.Name = "AuthToken";
     opts.Cookie.HttpOnly = true; // Ensure the cookie is not accessible via JavaScript
     opts.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Only send over HTTPS
-    opts.ExpireTimeSpan = TimeSpan.FromMinutes(10); // Expire cookies after 10 mins
-    opts.SlidingExpiration = true; // Refresh cookie expiration on user activity
+    opts.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Expire cookies after 30 mins
 });
+
+
 
 builder.Services.AddSwaggerGen(opts =>
 {
@@ -151,7 +155,6 @@ var app = builder.Build();
 
 app.UseRouting();
 app.UseCors();
-
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -204,9 +207,10 @@ else
 
 app.MapControllers();
 
+app.Map("/",()=> "Add \"/swagger/index.html\" to the end of the URL to access Swagger Testing ");
+
 app.MapGet("/error", () => Results.Problem());
 
-app.MapGet("/", () => "Hello World!");
-
 app.Run();
+
 

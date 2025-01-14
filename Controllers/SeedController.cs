@@ -38,7 +38,7 @@ namespace WatchNest.Controllers
             {
                 if(await _context.Series.AnyAsync() || await _userManager.Users.AnyAsync())
                 {
-                    return Ok("Data already exist in the databse, no action was made");
+                    return Ok("Data already exist in the database, no action was made");
                 } 
 
                 if (_context.Database.GetPendingMigrations().Any())

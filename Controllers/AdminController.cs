@@ -5,6 +5,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using WatchNest.Constants;
 using WatchNest.DTO;
 using WatchNest.Models.Interfaces;
+using WatchNestAPI.Models;
 
 namespace WatchNest.Controllers
 {
@@ -29,9 +30,9 @@ namespace WatchNest.Controllers
         public async Task<ActionResult> DeleteUser(
             [SwaggerParameter("The ID of the user to be deleted")] string userId)
         {
-            var sucessResults = await _adminService.DeleteUserAsync(userId);
+            var successResults = await _adminService.DeleteUserAsync(userId);
 
-            if (!sucessResults)
+            if (!successResults)
             {
                 return NotFound($"Error: Unable to delete user ID {userId} from the database");
             }
@@ -40,7 +41,7 @@ namespace WatchNest.Controllers
         }
 
         [HttpGet]
-        [ResponseCache(CacheProfileName = "Any-60")]
+        //[ResponseCache(CacheProfileName = "Any-60")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -48,7 +49,7 @@ namespace WatchNest.Controllers
             Summary = "Retrieves all users from the database",
             Description = "Returns a list of users, their IDs, and their roles"
         )]
-        public async Task<ActionResult<RestDTO<IEnumerable<object>>>> GetAllUsers(
+        public async Task<ActionResult<RestDTO<IEnumerable<UserModel>>>> GetAllUsers(
             [SwaggerParameter("An int for starting page")][FromQuery] int pageIndex = 0,
              [SwaggerParameter("An int for number of entity per page")][FromQuery] int pageSize = 10)
         {
@@ -60,9 +61,9 @@ namespace WatchNest.Controllers
                 if (!result.Data.Any())
                 {
                     return string.IsNullOrEmpty(result.Message)
-                        ? Ok(new RestDTO<IEnumerable<object>>
+                        ? Ok(new RestDTO<IEnumerable<UserModel>>
                         {
-                            Data = Enumerable.Empty<object>(),
+                            Data = Enumerable.Empty<UserModel>(),
                             Message = "No users found!"
                         })
                         : BadRequest(result.Message);
@@ -83,7 +84,7 @@ namespace WatchNest.Controllers
 
 
         [HttpGet]
-        [ResponseCache(CacheProfileName = "Any-60")]
+       // [ResponseCache(CacheProfileName = "Any-60")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
@@ -91,7 +92,7 @@ namespace WatchNest.Controllers
             Description = "Returns a list of series available in the database that are distinct with" +
             " pagination, sorting, and filter"
         )]
-        public async Task<ActionResult<RestDTO<IEnumerable<string>>>> GetAllSeries([FromQuery] AdminRequestDTO<SeriesDTO> input)
+        public async Task<ActionResult<RestDTO<IEnumerable<SeriesDTO>>>> GetAllSeries([FromQuery] AdminRequestDTO<SeriesDTO> input)
         {
             try
             {
