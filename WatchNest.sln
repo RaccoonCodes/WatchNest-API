@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WatchNestAPI", "WatchNestAPI.csproj", "{4459E9D4-302B-4959-A71B-29477E6461C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatchNestApp", "..\WatchNestApp\WatchNestApp.csproj", "{737BAB3B-4510-40E9-B4EF-D8E4114E233D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WatchNestApp", "..\WatchNestApp\WatchNestApp.csproj", "{737BAB3B-4510-40E9-B4EF-D8E4114E233D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
