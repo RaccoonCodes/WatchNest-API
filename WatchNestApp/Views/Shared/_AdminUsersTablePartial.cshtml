@@ -1,0 +1,32 @@
+﻿@model IEnumerable<UserModel>
+
+<table class="table table-dark table-hover">
+    <thead>
+        <tr>
+            <th>UserName</th>
+            <th>UserID</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>@user.Id</td>
+                    <td>
+                        <a class="btn btn-outline-danger" asp-route-userID="@user.Id" asp-route-username="@user.UserName" asp-action="DeleteUserView" asp-controller="Admin">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="2" class="text-center">No Users found in the database!</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,32 @@
+﻿@model IEnumerable<SeriesDTO>
+
+<table class="table table-dark table-hover">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Genre</th>
+            <th>Provider</th>
+            <th>Season</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var series in Model)
+            {
+                <tr>
+                    <td>@series.TitleWatched</td>
+                    <td>@series.Genre</td>
+                    <td>@series.Provider</td>
+                    <td>@series.SeasonWatched</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="2" class="text-center">No Users found in the database!</td>
+            </tr>
+        }
+    </tbody>
+</table>

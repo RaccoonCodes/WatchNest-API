@@ -1,0 +1,349 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+.wrapper {
+  height: 100%;
+}
+
+@keyframes rotate {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+body {
+  background-image: url("/Images/Red-Waves-lg.svg");
+  background-color: #002233;
+  background-attachment: fixed;
+  background-repeat: repeat-x;
+  background-size: cover;
+  font-family: "Euclid Circular A";
+  color: #000;
+  animation: rotate 10s infinite alternate linear;
+}
+@media (max-width: 576px) {
+  body {
+    padding-top: 12rem;
+  }
+}
+
+.login-card {
+  /* Glass-like effect */
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  margin: 0 20px;
+  padding: 70px 30px 44px;
+  border-radius: 1.25rem;
+  background: rgba(148, 170, 51, 0.7); /* Semi-transparent*/
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  text-align: center;
+  border: 1px solid rgba(33, 108, 231, 0.3);
+}
+
+@media (width >= 500px) {
+  .login-card {
+    margin: 0;
+    width: 400px;
+  }
+}
+.login-card > h2 {
+  font-size: 36px;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+
+.login-card > h3 {
+  color: rgba(0, 0, 0, 0.7);
+  margin: 0 0 30px;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.login-form {
+  width: 100%;
+  margin: 0;
+  display: grid;
+  gap: 16px;
+}
+
+.login-form > input,
+.login-form > button {
+  width: 100%;
+  height: 56px;
+}
+
+.login-form > input {
+  border: 2px solid #ebebeb;
+  font-family: "Merriweather", serif;
+  font-size: 16px;
+  font-weight: 700;
+  font-style: italic;
+  padding: 0 16px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  color: rgba(0, 0, 0, 0.7);
+  outline: none;
+  transition: all 0.3s ease; /* Smooth transitions on focus */
+}
+.login-form > input::placeholder {
+  color: #555;
+  opacity: 1;
+}
+
+.login-form > input:focus {
+  border: 2px solid #216ce7; /* Change border color on focus */
+}
+
+.login-form > button {
+  cursor: pointer;
+  width: 100%;
+  height: 56px;
+  padding: 0 16px;
+  border-radius: 0.5rem;
+  background: #216ce7;
+  color: #f9f9f9;
+  border: 0;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 2px;
+  transition: all 0.375s;
+}
+
+.login-form > a {
+  color: #216ce7;
+  font-size: 1rem;
+  text-align: left;
+  text-decoration: none;
+  margin-bottom: 6px;
+}
+
+.navbar ul {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.navbar li {
+  color: #fff;
+  position: relative;
+}
+.navbar li::after {
+  content: " ";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #fff;
+  border-radius: 5px;
+  transform: scaleX(0);
+  transition: all 0.3s ease;
+}
+.navbar li:hover::after {
+  transform: scale(1);
+}
+.navbar li.center-text {
+  flex-grow: 1; /* Allow item to take extra space */
+  text-align: center;
+}
+
+.card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 75vw;
+  max-width: 650px;
+  height: 400px;
+  padding: 44px 30px 44px 20px;
+  background: #272524;
+  border-radius: 24px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.card.peek-expand {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+}
+.card.peek-expand:hover {
+  width: 100%;
+  padding: 20px;
+}
+.card.peek-expand:hover::before {
+  opacity: 0;
+}
+.card.peek-expand::before {
+  content: attr(data-label);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  color: white;
+  pointer-events: none;
+  text-align: center;
+  z-index: 1;
+  opacity: 0.5;
+}
+.card.peek-expand h2,
+.card.peek-expand h3,
+.card.peek-expand p {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+}
+.card.peek-expand:hover h2, .card.peek-expand:hover h3, .card.peek-expand:hover p {
+  opacity: 1;
+  transform: translateY(0);
+}
+.card.peek-expand p {
+  text-align: justify;
+  padding: 10px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+.card img {
+  max-width: 280px;
+  width: 36vw;
+  height: 300px;
+  object-fit: cover;
+  margin-left: -60px;
+  margin-right: 30px;
+  border-radius: inherit;
+  box-shadow: 0 60px 40px rgba(0, 0, 0, 0.08);
+  transition: border-radius 0.3s;
+}
+.card h2 {
+  font-size: 22px;
+  font-weight: 400;
+  margin-top: 0;
+  margin-right: 30px;
+  margin-bottom: 10px;
+}
+.card h3 {
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0;
+  opacity: 0.75;
+}
+.card p {
+  font-size: 13px;
+  font-weight: 400;
+  margin-bottom: 30px;
+  opacity: 0.5;
+}
+
+.socials {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.socials a {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  background-color: #216ce7;
+  color: #fff;
+  border-radius: 50%;
+  text-decoration: none;
+  transition: background-color 0.3s, transform 0.2s;
+}
+.socials a i {
+  font-size: 20px;
+}
+.socials a:hover {
+  background-color: #1a4d99;
+  transform: scale(1.1);
+}
+.socials > button {
+  position: relative;
+  border: 0;
+  background: transparent;
+  color: #f8f8f8;
+  padding: 0;
+}
+.socials > button:first-child::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  transition: 0.3s;
+  transform: translateY(0);
+}
+.socials > button > i {
+  position: relative;
+  z-index: 1;
+  background: #3f3b39;
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+  width: 50px;
+  height: 50px;
+  border-radius: 40px;
+}
+
+@media (width <= 600px) {
+  .card {
+    margin: 0 40px;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-bottom: 60px;
+    width: 100%;
+    text-align: center;
+    flex-direction: column;
+  }
+  .card h2 {
+    margin-right: 0;
+    font-size: 26px;
+  }
+  .card img {
+    margin: -100px 0 30px 0;
+    width: 100%;
+    max-width: 1000px;
+    height: 250px;
+  }
+  .card p {
+    max-width: 360px;
+  }
+  .socials {
+    justify-content: center;
+  }
+}
+@media (width <= 440px) {
+  .card img {
+    height: 50vw;
+    width: 50vw;
+    border-radius: 50%;
+    border: 12px solid #272524;
+    box-shadow: none;
+    margin: -140px 0 30px 0;
+  }
+}
+
+/*# sourceMappingURL=AfterLoginStyles.css.map */

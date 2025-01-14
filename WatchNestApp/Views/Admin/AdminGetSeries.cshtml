@@ -1,0 +1,35 @@
+﻿@{
+    Layout = "_AfterLoginLayout";
+    var pagination = ViewBag.Pagination as ApiResponse<SeriesDTO>;
+}
+
+@model IEnumerable<SeriesDTO>
+
+<div class="container-fluid p-0 pt-2 mt-5 text-white">
+    <h3 class="text-center ">Series in Database</h3>
+
+    <!-- Admin Table Content -->
+    <div id="table-content" data-viewtype="Admin" data-datatype="SeriesDTO">
+        @if (Model != null && Model.Any())
+        {
+            @await Html.PartialAsync("_AdminSeriesTablePartial", Model)
+        }
+        else
+        {
+            <p class="text-center text-white">No series found in the database!</p>
+        }
+    </div>
+
+    <!-- Pagination -->
+    <div id="pagination-container" data-viewtype="Admin" data-datatype="SeriesDTO">
+        @if (ViewBag.Pagination != null)
+        {
+            @await Html.PartialAsync("_PaginationPartial", pagination)
+        }
+        else
+        {
+            <p class="text-center text-white">No pagination available.</p>
+        }
+    </div>
+</div>
+

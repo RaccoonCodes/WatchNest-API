@@ -1,0 +1,12 @@
+﻿@{
+    Layout = "_AfterLoginLayout";
+}
+
+@model IEnumerable<SeriesDTO>
+
+<div class="container-fluid p-0 pt-2 mt-5">
+    <h3 class="text-center text-white">Last 5 series Added to your list!</h3>
+
+    @await Html.PartialAsync("_SeriesTablePartial", Model)
+
+</div>

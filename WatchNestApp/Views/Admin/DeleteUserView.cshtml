@@ -1,0 +1,30 @@
+﻿@{
+    Layout = "_AfterLoginLayout";
+}
+@model (string UserID, string Username)
+
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="login-card">
+        <h2>Deleting User</h2>
+        <h3>Are you sure you want to delete the following User?</h3>
+        <table class="table table-hover">
+            <tr>
+                <th>Username</th>
+                <td>@Model.Username</td>
+            </tr>
+            <tr>
+                <th>UserID</th>
+                <td>@Model.UserID</td>
+            </tr>
+           
+        </table>
+        <a class="btn btn-secondary" asp-action="Index" asp-controller="Admin">CANCEL</a>
+        <div class="mt-2">
+
+            <form method="post" asp-action="DeleteUserPost" asp-controller="Admin">
+                <input type="hidden" name="userID" value="@Model.UserID" />
+                <button type="submit" class="btn btn-danger">DELETE</button>
+            </form>
+        </div>
+    </div>
+</div>

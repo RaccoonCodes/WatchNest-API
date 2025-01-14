@@ -1,0 +1,24 @@
+﻿@{
+    Layout = "_AfterLoginLayout";
+}
+<div class="text-white justify-content-center align-items-center text-center pt-3">
+    <h1>Access Denied!</h1>
+    <p>You don't have permission to access this resource!</p>
+
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <p>
+            You don't have permission to access Administrator page!
+            If this is a mistake, please contact the administrator
+        </p>
+        <p>Click Here to go back to your watchlist!</p>
+        <a class="btn btn-primary" asp-action="Index" asp-controller="WatchList">Home page</a>
+    }
+    else
+    {
+
+        <p>Please login to access this page! If this is a mistake, please contact the administrator </p>
+        <a class="btn btn-primary" asp-action="Index" asp-controller="Home">Home page</a>
+
+    }
+</div>

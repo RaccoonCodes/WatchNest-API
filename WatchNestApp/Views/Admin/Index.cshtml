@@ -1,0 +1,28 @@
+﻿@{
+    Layout = "_AfterLoginLayout";
+    var pagination = ViewBag.Pagination as ApiResponse<UserModel>;
+}
+
+@model IEnumerable<UserModel>
+
+<div class="container-fluid p-0 pt-2 mt-5">
+    <h3 class="text-center text-white">All Users in Database</h3>
+    <!-- Table -->
+    <div id="table-content" data-viewtype="Admin" data-datatype="UserModel">
+        @await Html.PartialAsync("_AdminUsersTablePartial",Model)
+    </div>
+
+    <!-- Pagination -->
+    <div id="pagination-container" data-viewtype="Admin" data-datatype="UserModel">
+        @if (ViewBag.Pagination != null)
+        {
+            @await Html.PartialAsync("_PaginationUserPartial", pagination)
+        }
+       
+    </div>
+
+</div>
+
+
+
+

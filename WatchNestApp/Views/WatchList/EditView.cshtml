@@ -1,0 +1,23 @@
+﻿@{
+    Layout = "_AfterLoginLayout";
+}
+
+@model UpdateModel
+
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="login-card">
+        <h2>Update Info</h2>
+        <h3>Update info for @Model.TitleWatched</h3>
+        <form method="post" asp-action="EditView" asp-controller="WatchList" class="login-form">
+            <input type="hidden" asp-for="SeriesID" value="@Model.SeriesID" />
+            <input type="hidden" asp-for="UserID" value="@Model.UserID" />
+            <input type="text" asp-for="TitleWatched" placeholder="Title" />
+            <input type="number" asp-for="SeasonWatched" placeholder="Season" />
+            <input type="text" asp-for="Provider" placeholder="Provider" />
+            <input type="text" asp-for="Genre" placeholder="Genre" />
+            <button type="submit">SUBMIT</button>
+            <div asp-validation-summary="All" style="color:#2fe05f"></div>
+        </form>
+    </div>
+</div>
+

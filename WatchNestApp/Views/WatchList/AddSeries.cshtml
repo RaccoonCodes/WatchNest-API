@@ -1,0 +1,19 @@
+﻿@{
+    Layout = "_AfterLoginLayout";
+}
+
+@model NewSeriesModel
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="login-card">
+        <h2>New Series</h2>
+        <h3>Fill the following information</h3>
+        <form method="post" asp-action="AddSeries" asp-controller="WatchList" class="login-form">
+           <input type="text" asp-for="TitleWatched" placeholder="Title"/>
+           <input type="number" asp-for="SeasonWatched" placeholder="Season" />
+           <input type="text" asp-for="ProviderWatched" placeholder="Provider" />
+           <input type="text" asp-for="Genre" placeholder="Genre" />
+            <button type="submit">SUBMIT</button>
+            <div asp-validation-summary="All" style="color:#2fe05f"></div>
+        </form>
+    </div>
+</div>

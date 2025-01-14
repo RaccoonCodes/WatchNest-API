@@ -1,0 +1,183 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+.wrapper {
+  height: 100%;
+}
+
+@keyframes rotate {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+@keyframes cardGlow {
+  0% {
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  }
+  50% {
+    box-shadow: 0 4px 30px rgba(33, 108, 231, 0.6); /* Brighter blue glow */
+  }
+  100% {
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  }
+}
+body {
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: 0 24px;
+  background-image: url("/Images/Blue-Wave-lg.svg");
+  background-color: #002233;
+  background-attachment: fixed;
+  background-repeat: repeat-x;
+  background-size: cover;
+  font-family: "Euclid Circular A";
+  color: #000;
+  animation: rotate 10s infinite alternate linear;
+}
+
+@media (width >= 500px) {
+  body {
+    padding: 0;
+  }
+}
+.login-card {
+  /* Glass-like effect */
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  margin: 0 20px;
+  padding: 70px 30px 44px;
+  border-radius: 1.25rem;
+  background: rgba(33, 108, 231, 0.7); /* Semi-transparent blue */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  text-align: center;
+  border: 1px solid rgba(33, 108, 231, 0.3);
+  transition: box-shadow 0.5s ease, transform 0.3s ease; /* Transition effect for hover */
+}
+
+.login-card:hover {
+  /* Glow effect on hover */
+  box-shadow: 0 4px 30px rgba(33, 108, 231, 0.6);
+  transform: scale(1.1); /* Slightly enlarge the card */
+}
+
+@media (width >= 500px) {
+  .login-card {
+    margin: 0;
+    width: 400px;
+  }
+}
+.login-card > h2 {
+  font-size: 36px;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+
+.login-card > h3 {
+  color: rgba(0, 0, 0, 0.7);
+  margin: 0 0 30px;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.login-form {
+  width: 100%;
+  margin: 0;
+  display: grid;
+  gap: 16px;
+}
+
+.login-form > input,
+.login-form > button {
+  width: 100%;
+  height: 56px;
+}
+
+.login-form > input {
+  border: 2px solid #ebebeb;
+  font-family: "Merriweather", serif;
+  font-size: 16px;
+  font-weight: 700;
+  font-style: italic;
+  padding: 0 16px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  color: rgba(0, 0, 0, 0.7);
+  outline: none;
+  transition: all 0.3s ease; /* Smooth transitions on focus */
+}
+.login-form > input::placeholder {
+  color: #555;
+  opacity: 1;
+}
+
+.login-form > input:focus {
+  border: 2px solid #216ce7; /* Change border color on focus */
+}
+
+.login-form > button {
+  cursor: pointer;
+  width: 100%;
+  height: 56px;
+  padding: 0 16px;
+  border-radius: 0.5rem;
+  background: #216ce7;
+  color: #f9f9f9;
+  border: 0;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 2px;
+  transition: all 0.375s;
+}
+
+.login-form > a {
+  color: #216ce7;
+  font-size: 1rem;
+  text-align: left;
+  text-decoration: none;
+  margin-bottom: 6px;
+}
+
+.navbar {
+  z-index: 1000; /* Ensure the navbar stays above other elements */
+}
+.navbar ul {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.navbar li {
+  color: #fff;
+  position: relative;
+}
+.navbar li::after {
+  content: " ";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #fff;
+  border-radius: 5px;
+  transform: scaleX(0);
+  transition: all 0.3s ease;
+}
+.navbar li:hover::after {
+  transform: scale(1);
+}
+.navbar li.center-text {
+  flex-grow: 1; /* Allow item to take extra space */
+  text-align: center;
+}
+
+/*# sourceMappingURL=StylesSass.css.map */

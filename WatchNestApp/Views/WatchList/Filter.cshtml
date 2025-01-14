@@ -1,0 +1,56 @@
+﻿@{
+    Layout = "_AfterLoginLayout";
+}
+
+@model (IEnumerable<SeriesDTO>,FilterModel)
+
+<div class="container-fluid p-0 pt-2 mt-5">
+    <div class="row">
+        <!-- Filter Column -->
+        <div class="col-md-3 text-white">
+            <div class="d-grid gap-1">
+                <h3 class="text-center">Filter by</h3>
+                <form method="get" asp-action="Filter" asp-controller="WatchList">
+                    <div class="mb-2">
+                        <label for="FilterQuery">Search </label>
+                        <input type="text" id="filterQuery" name="FilterQuery" class="form-control" placeholder="Enter query" value="@Model.Item2.FilterQuery" />
+                    </div>
+                    <div class="mb-2">
+                        <label for="sortColumn">By</label>
+                        <select id="sortColumn" name="SortColumn" class="form-select">
+                            <option value="TitleWatched" selected="@((Model.Item2.SortColumn == "TitleWatched") ? true : false)">Title</option>
+                            <option value="Provider" selected="@((Model.Item2.SortColumn == "Provider") ? true : false)">Provider</option>
+                            <option value="Genre" selected="@((Model.Item2.SortColumn == "Genre") ? true : false)">Genre</option>
+                        </select>
+                    </div>
+                    <div class="mb-2">
+                        <label for="sortOrder">Sort by:</label>
+                        <select id="sortOrder" name="SortOrder" class="form-select">
+                            <option value="ASC" selected="@((Model.Item2.SortOrder == "ASC") ? true : false)">Ascending</option>
+                            <option value="DESC" selected="@((Model.Item2.SortOrder == "DESC") ? true : false)">Descending</option>
+                        </select>
+                    </div>
+                    <div class="mb-2">
+                        <button type="submit" class="btn btn-primary">Apply Filters</button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Table Column -->
+        <div class="col-md-9">
+            <div id="table-content" data-viewtype="User" data-datatype="SeriesDTO">
+                @await Html.PartialAsync("_SeriesTablePartial", Model.Item1)
+            </div>
+            <!--Navigation-->
+            <div id="pagination-container" data-viewtype="User" data-datatype="SeriesDTO">
+                @if (ViewBag.Pagination != null)
+                {
+                    var pagination = ViewBag.Pagination as ApiResponse<SeriesDTO>;
+                    @await Html.PartialAsync("_PaginationPartial", pagination);
+                }
+            </div>
+        </div>
+    </div>
+</div>

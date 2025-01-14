@@ -1,0 +1,15 @@
+﻿@model LoginModel
+
+<div class="login-card">
+    <h2>Login</h2>
+    <h3>Enter your username and password</h3>
+    <form method="post" asp-action ="Login" asp-controller="Home" class="login-form">
+        <input type= "text" asp-for="Username" placeholder="Username" />
+        <input type= "password" asp-for="Password" placeholder="Password" />
+        <button type="submit">LOGIN</button>
+        <div asp-validation-summary="All" style="color:#2fe05f"></div>
+    </form>
+    <div id="loadingSpinner" class="spinner-border text-primary" role="status" style="display: none; margin-top: 20px;">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
