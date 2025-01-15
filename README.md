@@ -16,7 +16,7 @@ Some major updates were made since the completion of front-end development:
 
 **Theses changes made little to no impact to performance so Time Complexity is still the same after these changes were made**
 
-**The Main Application is Complete and a new README is Added for more info about the front-end work**
+**The Main Application is Complete. It's on its own Repository called WatchNest-MainApp**
 
 
 ## Table of Contents
